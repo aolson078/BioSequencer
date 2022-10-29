@@ -1,0 +1,148 @@
+Microsoft (R) Macro Assembler Version 14.33.31629.0	    10/29/22 10:41:54
+example.asm						     Page 1 - 1
+
+
+				INCLUDE io.h
+			      C ; IO.H -- header file for I/O macros (listing suppressed)
+			      C .NOLIST      ; turn off listing
+			      C .LIST        ; begin listing
+			      C 
+				.386
+				.model flat
+
+ 00000000			.data
+ 00000000 00000047		intArray	DWORD "G","A","T","C"         ;10000h,20000h,30000h,40000h,50000h
+	   00000041
+	   00000054
+	   00000043
+ 00000010  00000064 [		nuc			DWORD 100 DUP (?), 0
+	    00000000
+	   ] 00000000
+ 000001A4 45 6E 74 65 72	prompt		BYTE  "Enter nucloetide string: ", 0
+	   20 6E 75 63 6C
+	   6F 65 74 69 64
+	   65 20 73 74 72
+	   69 6E 67 3A 20
+	   00
+ 000001BE 46 72 65 71 75	resultLbl	BYTE  "Frequency of each nucleotide: ", 0
+	   65 6E 63 79 20
+	   6F 66 20 65 61
+	   63 68 20 6E 75
+	   63 6C 65 6F 74
+	   69 64 65 3A 20
+	   00
+
+ 00000000			.code
+ 00000000			_MainProc proc
+					 
+					 input prompt, nuc, 100
+
+ 0000001E  BF 00000000			 mov edi, 0
+
+ 00000023  BF 00000010 R	     mov edi, OFFSET nuc
+ 00000028  B9 00000000			 mov ecx, 0
+ 0000002D  B8 00000000			 mov eax, 0
+ 00000032  BB 00000000			 mov ebx, 0
+ 00000037  BA 00000000			 mov edx, 0
+
+ 0000003C			LP:
+				;	.if eax == 0
+				;	mov eax, 4
+				;	.endif
+
+
+
+ 0000003C  BA 47415443			mov edx,47415443h				; askii values of nucleotides "GATC"
+
+					.if [edi] == dl
+ 00000045  FE C0			inc al
+					.endif
+					
+ 00000047  C1 CA 08			ror edx,8
+
+					.if [edi] == dl
+ 0000004E  FE C4			inc ah
+					.endif
+
+ 00000050  C1 CA 08			ror edx,8
+
+					.if [edi] == dl
+ 00000057  FE C3			inc bl
+					.endif
+
+ 00000059  C1 CA 08			ror edx,8
+
+					.if [edi] == dl
+ 00000060  FE C7			inc bh
+					.endif
+					
+ 00000062  8A 0F			mov cl, [edi]
+
+ 00000064  83 C7 01			add edi, 1
+ 00000067  66| 83 F9 00			cmp cx, 0
+ 0000006B  75 CF			jne LP
+ 0000006D  C3			    ret
+
+ 0000006E			_MainProc ENDP
+				END
+Microsoft (R) Macro Assembler Version 14.33.31629.0	    10/29/22 10:41:54
+example.asm						     Symbols 2 - 1
+
+
+
+
+Macros:
+
+                N a m e                 Type
+
+atod . . . . . . . . . . . . . .	Proc
+atow . . . . . . . . . . . . . .	Proc
+dtoa . . . . . . . . . . . . . .	Proc
+input  . . . . . . . . . . . . .	Proc
+output . . . . . . . . . . . . .	Proc
+wtoa . . . . . . . . . . . . . .	Proc
+
+
+Segments and Groups:
+
+                N a m e                 Size     Length   Align   Combine Class
+
+FLAT . . . . . . . . . . . . . .	GROUP
+_DATA  . . . . . . . . . . . . .	32 Bit	 000001DD DWord	  Public  'DATA'	
+_TEXT  . . . . . . . . . . . . .	32 Bit	 0000006E DWord	  Public  'CODE'	
+
+
+Procedures, parameters, and locals:
+
+                N a m e                 Type     Value    Attr
+
+_MainProc  . . . . . . . . . . .	P Near	 00000000 _TEXT	Length= 0000006E Public
+  LP . . . . . . . . . . . . . .	L Near	 0000003C _TEXT	
+
+
+Symbols:
+
+                N a m e                 Type     Value    Attr
+
+@CodeSize  . . . . . . . . . . .	Number	 00000000h   
+@DataSize  . . . . . . . . . . .	Number	 00000000h   
+@Interface . . . . . . . . . . .	Number	 00000000h   
+@Model . . . . . . . . . . . . .	Number	 00000007h   
+@code  . . . . . . . . . . . . .	Text   	 _TEXT
+@data  . . . . . . . . . . . . .	Text   	 FLAT
+@fardata?  . . . . . . . . . . .	Text   	 FLAT
+@fardata . . . . . . . . . . . .	Text   	 FLAT
+@stack . . . . . . . . . . . . .	Text   	 FLAT
+_getInput  . . . . . . . . . . .	L Near	 00000000 External
+_showOutput  . . . . . . . . . .	L Near	 00000000 External
+atodproc . . . . . . . . . . . .	L Near	 00000000 External
+atowproc . . . . . . . . . . . .	L Near	 00000000 External
+dtoaproc . . . . . . . . . . . .	L Near	 00000000 External
+intArray . . . . . . . . . . . .	DWord	 00000000 _DATA	
+nuc  . . . . . . . . . . . . . .	DWord	 00000010 _DATA	
+prompt . . . . . . . . . . . . .	Byte	 000001A4 _DATA	
+resultLbl  . . . . . . . . . . .	Byte	 000001BE _DATA	
+wtoaproc . . . . . . . . . . . .	L Near	 00000000 External
+
+	   0 Warnings
+	   0 Errors
